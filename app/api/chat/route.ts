@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { NextResponse } from 'next/server'
 
-type Msg = { role: 'user' | 'model'; parts: string }
+type Msg = { role: 'user' | 'model'; parts: { text: string }[] }
 
 export async function POST(req: Request) {
     try {
@@ -61,7 +61,7 @@ Reste concis et professionnel.`
         // Convert messages to Gemini format
         const history: Msg[] = messages.slice(0, -1).map(msg => ({
             role: msg.role === 'user' ? 'user' : 'model',
-            parts: msg.content,
+            parts: [{ text: msg.content }],
         }))
 
         const lastMessage = messages[messages.length - 1].content
